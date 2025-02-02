@@ -1,4 +1,4 @@
- Installation & Running Instructions
+Installation & Running Instructions
 # NATS Cluster Setup with Docker
 
 ## Prerequisites
@@ -29,16 +29,39 @@
 
     docker start nats-server-demo2
 
-5. Connecting to the Cluster
+5. Simulating the Cluster Environment
 
-   To connect a client to the cluster:
-    
-   Use any running server's address:
+   Steps 1: Starts the NATS Cluster
 
-   nats bench demo --sub=10 -s nats://admin:natsdemo@localhost:4222
-    
+   Ensure all NATS server are up and running using
+   docker-compose up -d
+   
+   Step 2: Create a Subscriber
+
+   Run the following command to subscribe to the demo subject with 10 subscribers across the cluster:
+
+   nats bench demo --sub=10 -s nats://admin:natsdemo@localhost:4222,nats://admin:natsdemo@localhost:4223,nats://admin:natsdemo@localhost:4224
+
+   Step 3: Publish Messages
+   
+   Create a publisher that sends messages to the demo subject across all available servers:
+
+   nats pub demo hi --count=-1 --sleep=500ms -s nats://localhost:4222,nats://localhost:4223,nats://localhost:4224 --user admin --password natsdemo
+
+   Step 4: Test Cluster Failover
+
+   Stop a NATS server and observe how the cluster handles failover:
+
+   docker stop nats-server-demo2
+
+   Even with one server down, the remaining servers should continue processing messages.
+
+   Restart the server to restore full cluster functionality:
+   
+   docker start nats-server-demo2
+
 6. Stopping the Cluster
 
-    To shut down all servers:
+   To gracefully shut down all NATS servers:
     
-    docker-compose down
+   docker-compose down
