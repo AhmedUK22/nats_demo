@@ -1,0 +1,40 @@
+services :
+  nats-server-demo1:
+    image: nats:latest
+    container_name: nats-server-demo1
+    command: [ "-c", "/etc/nats/nat_server_demo1.conf" ]
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+    volumes:
+      - ./config/nat_server_demo1.conf:/etc/nats/nat_server_demo1.conf
+    networks:
+      - anglesey-cluster
+
+  nats-server-demo2:
+    image: nats:latest
+    container_name: nats-server-demo2
+    command: [ "-c", "/etc/nats/nat_server_demo2.conf" ]
+    ports:
+      - "4223:4223"
+      - "6223:6223"
+    volumes:
+      - ./config/nat_server_demo2.conf:/etc/nats/nat_server_demo2.conf
+    networks:
+      - anglesey-cluster
+
+  nats-server-demo3:
+    image: nats:latest
+    container_name: nats-server-demo3
+    command: [ "-c", "/etc/nats/nat_server_demo3.conf" ]
+    ports:
+      - "4224:4224"
+      - "6224:6224"
+    volumes:
+      - ./config/nat_server_demo3.conf:/etc/nats/nat_server_demo3.conf
+    networks:
+      - anglesey-cluster
+
+networks:
+  anglesey-cluster:
+    driver: bridge
