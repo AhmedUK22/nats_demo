@@ -9,7 +9,6 @@ Installation & Running Instructions
 1. Clone this repository:
 
    git clone <repo-url>
-   cd nats_impl
 
 2. Start the NATS cluster:
 
@@ -65,3 +64,28 @@ Installation & Running Instructions
    To gracefully shut down all NATS servers:
     
    docker-compose down
+
+
+# Working with Key-Value Store in NATS
+
+Once your NATS cluster is running, you can use the following Python script to interact with JetStream and perform Key-Value operations. This script will help you store and retrieve values from the Key-Value store in your JetStream-enabled NATS cluster.
+
+1. Run the Script
+
+   Ensure your NATS cluster is running using docker-compose up -d
+
+   Once the cluster is up, run the script:
+
+   python nats_kv.py
+
+   The script will prompt you to confirm when the cluster is up and running. After that, it will create a Key-Value bucket, store a value, and then ask you to manually stop one of the NATS servers. It will then attempt to retrieve the value again, demonstrating the cluster's resilience to server failures.
+
+2. Stop a NATS Server
+
+   Follow the prompt in the script to stop one of the NATS servers manually. You can do this by running:
+
+   docker stop nats-server-demo1
+
+3. Observe the Result
+
+   After stopping one of the servers, press ENTER in the script to see if it can still retrieve the stored value from the Key-Value store. The script will demonstrate how the JetStream Key-Value store handles a server failure in the cluster.
