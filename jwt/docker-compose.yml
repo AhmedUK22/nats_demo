@@ -1,0 +1,15 @@
+services :
+  nats_jwt_demo:
+    image: nats:latest
+    container_name: nats_jwt_demo
+    command: [ "-c", "etc/nats/resolver.conf" ]
+    ports:
+      - "4222:4222"
+    volumes:
+      - ./resolver.conf:/etc/nats/resolver.conf
+    networks:
+      - nats-network
+
+networks:
+  nats-network:  # Define the network
+    name: nats-network
